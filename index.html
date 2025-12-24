@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>何长轩 | 个人作品集</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* --- 配色方案 (低饱和度浅蓝系) --- */
+            
+            /* 整体背景：极淡的蓝白色 */
+            --bg-color: #F5F8FA; 
+            
+            /* 导航栏 & 页脚背景：低饱和度浅蓝色 */
+            --bar-bg-color: #DEE6ED;
+            
+            /* 文字颜色 */
+            --text-primary: #2C3E50; /* 深蓝灰 */
+            --text-secondary: #546E7A; 
+            
+            /* 装饰色 */
+            --theme-blue: #8FA6B8; 
+            --accent-orange: #F97316; /* 橙色亮点 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            antialiased;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* 隐藏滚动条 */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* 导航链接动效 */
+        .nav-link {
+            position: relative;
+            color: var(--text-primary);
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: var(--accent-orange);
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--accent-orange);
+            transform-origin: bottom right;
+            transition: transform 0.3s ease-out;
+        }
+        .nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        /* 橙色标题风格 */
+        .section-title {
+            color: var(--accent-orange);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        /* 图片 Hover 放大效果 */
+        .img-zoom-container {
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .img-zoom-container img {
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .img-zoom-container:hover img {
+            transform: scale(1.03);
+        }
+
+        /* 分隔线 */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--theme-blue), transparent);
+            opacity: 0.4;
+            margin: 4rem 0;
+        }
+        
+        /* 自定义浅蓝色背景类 */
+        .bg-light-blue {
+            background-color: var(--bar-bg-color);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <nav class="fixed top-0 w-full z-50 bg-light-blue/90 backdrop-blur-md border-b border-white/20 shadow-sm">
+        <div class="max-w-[1280px] mx-auto px-6 h-20 flex justify-between items-center">
+            <a href="#" class="text-2xl font-black tracking-tight text-slate-800">
+                何长轩<span style="color: var(--accent-orange)">.</span>
+            </a>
+            <div class="hidden md:flex space-x-10 text-sm">
+                <a href="#about" class="nav-link">个人信息</a>
+                <a href="#aigc" class="nav-link">AIGC作品</a>
+                <a href="#video" class="nav-link">音视频作品</a>
+                <a href="#copywriting" class="nav-link">文案作品</a>
+                <a href="#gallery" class="nav-link">图片作品</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="w-full pt-20">
+        
+        <!-- 首页首屏 (Hero) -->
+        <section class="min-h-[85vh] flex items-center justify-start max-w-[1280px] mx-auto px-6 relative overflow-hidden">
+            <!-- 左侧文字内容 -->
+            <div class="space-y-8 z-10 hero-text max-w-3xl relative">
+                <p class="text-slate-500 font-medium tracking-wider text-base">
+                    <span class="inline-block w-8 h-[2px] bg-orange-500 align-middle mr-2"></span>
+                    意向岗位：内容培训生-内容创作及运营方向
+                </p>
+                <h1 class="text-6xl md:text-8xl font-black tracking-tight leading-[1.1] text-slate-800">
+                    你好，我是<br>
+                    <span style="color: var(--accent-orange)">何长轩</span>
+                </h1>
+                <div class="pt-6 border-l-4 border-slate-300 pl-6 backdrop-blur-sm bg-white/30 rounded-r-lg">
+                    <p class="text-xl md:text-2xl text-slate-600 font-light leading-relaxed">
+                        AIGC内容创作/985新传在读/资深影迷体育迷<br>
+                        <span class="text-slate-900 font-medium mt-2 block">伟大始于渺小</span>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 右侧人物形象 -->
+            <div class="absolute right-[-10%] md:right-0 bottom-0 h-[85%] w-full md:w-[55%] z-0 pointer-events-none flex items-end justify-end">
+                <img 
+                    src="https://i.postimg.cc/JhH8VX3N/微信图片_20251224162101_241_105(1).jpg" 
+                    alt="何长轩" 
+                    class="h-full w-full object-contain object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]"
+                    style="-webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%); mask-image: linear-gradient(to bottom, black 85%, transparent 100%);"
+                >
+            </div>
+        </section>
+
+        <!-- 1. 个人信息 -->
+        <section id="about" class="py-24" style="background-color: #F0F4F8;">
+            <div class="max-w-[1280px] mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+                    <!-- 左侧：照片与核心信息 -->
+                    <div class="md:col-span-4 space-y-8">
+                        <div class="aspect-[3/4] bg-white p-3 shadow-xl rounded-2xl transition-transform duration-500 hover:-translate-y-2 border border-slate-100">
+                            <div class="w-full h-full overflow-hidden bg-gray-100 rounded-xl relative">
+                                <img src="https://i.postimg.cc/Dyqd5fSW/wei-xin-tu-pian-20250918125716.jpg" alt="何长轩生活照" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-between text-center bg-white p-6 rounded-lg shadow-sm border border-slate-100">
+                            <div>
+                                <div class="text-2xl font-bold text-orange-500">硕士</div>
+                                <div class="text-xs text-gray-500 mt-1">湖南大学 (985)</div>
+                            </div>
+                            <div class="w-[1px] bg-gray-100"></div>
+                            <div>
+                                <div class="text-2xl font-bold text-orange-500">学士</div>
+                                <div class="text-xs text-gray-500 mt-1">西北大学 (211)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：详细简历内容 -->
+                    <div class="md:col-span-8 space-y-12">
+                        <div>
+                            <!-- 修改：字号调大 -->
+                            <h2 class="section-title text-2xl uppercase tracking-widest mb-6">基本信息</h2>
+                            <p class="text-lg text-slate-700 leading-relaxed">
+                               985硕士在读+211本科，新闻传播科班出身。兼具扎实的理论功底与前沿的AIGC新媒体视野。
+                            </p>
+                        </div>
+
+                        <!-- 第一行：教育经历 & 获奖经历 (重点) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                            <!-- 教育经历 -->
+                            <div class="space-y-6">
+                                <h3 class="font-bold text-slate-800 text-lg border-b border-orange-200 pb-2 inline-block">教育经历</h3>
+                                <ul class="space-y-6">
+                                    <li class="relative pl-4 border-l-2 border-slate-300">
+                                        <div class="font-bold text-lg text-slate-800">湖南大学</div>
+                                        <div class="text-orange-500 text-sm font-medium mb-1">新闻与传播硕士 | 2025.09 - 至今</div>
+                                        <p class="text-sm text-slate-500">2025学年湖南大学二等奖学金</p>
+                                    </li>
+                                    <li class="relative pl-4 border-l-2 border-slate-300">
+                                        <div class="font-bold text-lg text-slate-800">西北大学</div>
+                                        <div class="text-orange-500 text-sm font-medium mb-1">新闻学学士 | 2021.09 - 2025.07</div>
+                                        <p class="text-sm text-slate-500">2022年西北大学单项奖学金</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- 修改：获奖经历 (替换了项目经验，加粗 AIGC 相关) -->
+                            <div class="space-y-6">
+                                <h3 class="font-bold text-slate-800 text-lg border-b border-orange-200 pb-2 inline-block">获奖经历 (精选)</h3>
+                                <ul class="space-y-4">
+                                    <li class="relative pl-4 border-l-2 border-slate-300">
+                                        <div class="text-slate-800 text-base font-bold">第七届全国大学生网络编辑创新大赛 <span class="text-orange-500">全国一等奖</span></div>
+                                        <div class="text-sm text-slate-500 font-medium">AIGC数字体育赛道</div>
+                                    </li>
+                                    <li class="relative pl-4 border-l-2 border-slate-300">
+                                        <div class="text-slate-800 text-base font-bold">首届湖南省大学生创业微短剧短视频大赛 <span class="text-orange-500">入围</span></div>
+                                        <div class="text-sm text-slate-500 font-medium">微短剧赛道（作品评审中）</div>
+                                    </li>
+                                    <li class="relative pl-4 border-l-2 border-slate-300">
+                                        <div class="text-slate-800 text-base">2022年 陕西省新媒体创意大赛 <span class="text-orange-500">省级二等奖</span></div>
+                                        <div class="text-sm text-slate-500">H5类</div>
+                                    </li>
+                                    <li class="relative pl-4 border-l-2 border-slate-300">
+                                        <div class="text-slate-800 text-base">2023年 大学生广告艺术大赛 <span class="text-orange-500">省级二等奖</span></div>
+                                        <div class="text-sm text-slate-500">视频类</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 第二行：实习经历 -->
+                        <div class="space-y-6">
+                            <h3 class="font-bold text-slate-800 text-lg border-b border-orange-200 pb-2 inline-block">实习经历</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                <div class="relative pl-4 border-l-2 border-slate-300">
+                                    <div class="font-bold text-lg text-slate-800">陕西省广电融媒体中心</div>
+                                    <div class="text-orange-500 text-sm font-medium mb-1">体育频道实习记者&编辑 | 2024.01 - 04</div>
+                                    <p class="text-sm text-slate-500 mt-1">参与《陕西体育》双微账号及官网的内容制作，累计发稿75篇；负责省队冬训的采访拍摄与新闻报道。</p>
+                                </div>
+                                <div class="relative pl-4 border-l-2 border-slate-300">
+                                    <div class="font-bold text-lg text-slate-800">西安公路研究院</div>
+                                    <div class="text-orange-500 text-sm font-medium mb-1">新媒体运营 | 2024.06 - 2025.02</div>
+                                    <p class="text-sm text-slate-500 mt-1">负责官方公众号日常运营发布；参与采访并撰写人物通讯，成功发表于《中国交通报》。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                         <!-- 核心技能 -->
+                         <div class="pt-8 border-t border-slate-200">
+                            <h3 class="font-bold text-slate-800 text-lg mb-4">核心技能</h3>
+                            <div class="flex flex-wrap gap-3">
+                                <span class="px-3 py-1 bg-white border border-slate-200 text-slate-600 rounded text-sm shadow-sm hover:border-orange-400 hover:text-orange-500 transition-colors cursor-default">AIGC (Gemini/ComfyUI/即梦)</span>
+                                <span class="px-3 py-1 bg-white border border-slate-200 text-slate-600 rounded text-sm shadow-sm hover:border-orange-400 hover:text-orange-500 transition-colors cursor-default">音视频制作 (Pr/Ps/Davinci/Au/剪映)</span>
+                                <span class="px-3 py-1 bg-white border border-slate-200 text-slate-600 rounded text-sm shadow-sm hover:border-orange-400 hover:text-orange-500 transition-colors cursor-default">数据分析 (SPSS/Excel)</span>
+                                <span class="px-3 py-1 bg-white border border-slate-200 text-slate-600 rounded text-sm shadow-sm hover:border-orange-400 hover:text-orange-500 transition-colors cursor-default">H5交互设计</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. AIGC 作品 -->
+        <section id="aigc" class="py-24 bg-white/60">
+            <div class="max-w-[1280px] mx-auto px-6">
+                <div class="mb-12 flex items-baseline justify-between border-b border-slate-200 pb-4">
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-800">AIGC 作品</h2>
+                    <span class="text-orange-500 font-bold text-sm">技术赋能内容</span>
+                </div>
+
+                <div class="group cursor-pointer">
+                    <!-- 全宽视频/图片展示区 -->
+                    <div class="w-full aspect-video bg-black relative shadow-sm rounded-lg overflow-hidden">
+                        <video controls class="w-full h-full object-contain" poster="https://i.postimg.cc/BPFBhC89/wei-xin-tu-pian-2025-12-24-154718-752.png">
+                            <source src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E7%BF%8E%E7%BE%BD%E7%9A%84%E6%97%85%E7%A8%8B.mp4" type="video/mp4">
+                            您的浏览器不支持视频播放。
+                        </video>
+                        
+                        <!-- 奖项角标 -->
+                        <div class="absolute top-6 right-6 bg-orange-500 text-white px-4 py-2 text-sm font-bold shadow-lg rounded-sm pointer-events-none">
+                            全国一等奖
+                        </div>
+                    </div>
+
+                    <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="md:col-span-2">
+                            <h3 class="text-2xl font-bold text-slate-800 mb-2 group-hover:text-orange-500 transition-colors">《翎羽的旅程》</h3>
+                            <p class="text-lg text-slate-600 font-medium mb-4">AIGC赋能非遗文化传播科普动画</p>
+                            <p class="text-slate-500 leading-relaxed">
+                                主导策划并制作。通过拟人化角色IP“翎羽”的第一视角，结合2025全运会热点，讲述毽球从“蹴鞠”到现代竞技体育的千年演变。发表至“新湖南”客户端及《湖南日报》国际频道。
+                            </p>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-sm">
+                            <h4 class="font-bold text-slate-800 mb-3 text-sm uppercase">技术栈应用</h4>
+                            <ul class="space-y-2 text-sm text-slate-600">
+                                <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-orange-500 mr-2"></i>LibLib 生成一致性角色</li>
+                                <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-orange-500 mr-2"></i>Banana nano 生成风格化场景</li>
+                                <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-orange-500 mr-2"></i>即梦AI 完成图生视频转化</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 精彩静帧展示 -->
+                    <div class="mt-16 pt-8 border-t border-slate-200/50">
+                        <h3 class="font-bold text-slate-800 mb-6 text-sm uppercase tracking-wider flex items-center">
+                            <span class="w-6 h-[2px] bg-orange-500 mr-3"></span>精彩静帧展示
+                        </h3>
+                        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            <!-- Image 1 -->
+                            <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                                <img src="https://i.postimg.cc/KKQqLQTK/wei-xin-tu-pian-2025-12-24-154736-928.png" class="w-full h-full object-cover">
+                            </div>
+                            <!-- Image 2 -->
+                            <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                                <img src="https://i.postimg.cc/BPFBhC89/wei-xin-tu-pian-2025-12-24-154718-752.png" class="w-full h-full object-cover">
+                            </div>
+                            <!-- Image 3 -->
+                            <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                                <img src="https://i.postimg.cc/0KS0tCzZ/wei-xin-tu-pian-2025-12-24-154724-269.png" class="w-full h-full object-cover">
+                            </div>
+                            <!-- Image 4 -->
+                            <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                                <img src="https://i.postimg.cc/ct3BDcvm/wei-xin-tu-pian-2025-12-24-154728-209.png" class="w-full h-full object-cover">
+                            </div>
+                            <!-- Image 5 -->
+                            <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                                <img src="https://i.postimg.cc/1VFrWK8J/wei-xin-tu-pian-2025-12-24-154732-696.png" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 分隔线 -->
+        <div class="max-w-[1280px] mx-auto px-6"><div class="section-divider"></div></div>
+
+        <!-- 3. 音视频作品 -->
+        <section id="video" class="py-12">
+            <div class="max-w-[1280px] mx-auto px-6">
+                <div class="mb-12 flex items-baseline justify-between border-b border-slate-200 pb-4">
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-800">音视频作品</h2>
+                    <span class="text-slate-400 font-medium text-sm">导演 / 策划 / 剪辑</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                    <!-- 作品 1 -->
+                    <div class="group cursor-pointer">
+                        <div class="w-full aspect-[16/9] bg-slate-200 mb-5 relative shadow-sm rounded-lg overflow-hidden">
+                            <video controls class="w-full h-full object-cover" poster="https://i.postimg.cc/FsLG85Kz/10月29日.png">
+                                <source src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E7%A0%B4%E8%8C%A7%E6%98%9F%E5%9F%8E.mp4" type="video/mp4">
+                                您的浏览器不支持视频播放。
+                            </video>
+                            <div class="absolute bottom-4 left-4 bg-black/70 text-white text-xs px-2 py-1 rounded pointer-events-none">人物纪实 / 微短剧</div>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 group-hover:text-orange-500 transition-colors">《破茧星城：2700公里的创业答卷》</h3>
+                        <p class="text-sm text-orange-500 font-medium mt-1 mb-3">首届湖南省大学生创业微短剧大赛 入围</p>
+                        <p class="text-slate-500 text-sm leading-relaxed line-clamp-2">
+                            记录湖南大学团队利用丝素蛋白技术创业的故事。一周内完成全流程制作，将生物科技转化为有温度的奋斗故事。
+                        </p>
+                    </div>
+
+                    <!-- 作品 2 -->
+                    <div class="group cursor-pointer">
+                        <div class="w-full aspect-[16/9] bg-slate-200 mb-5 relative shadow-sm rounded-lg overflow-hidden">
+                            <video controls class="w-full h-full object-cover" poster="https://i.postimg.cc/G2Bd1hV4/10月29日(7).png">
+                                <source src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E7%94%B5%E5%BD%B1%E9%92%97%E5%A4%B4%E5%87%A4.mp4" type="video/mp4">
+                                您的浏览器不支持视频播放。
+                            </video>
+                            <div class="absolute bottom-4 left-4 bg-black/70 text-white text-xs px-2 py-1 rounded pointer-events-none">剧情短片 / 古风</div>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 group-hover:text-orange-500 transition-colors">微电影《钗头凤》</h3>
+                        <p class="text-sm text-orange-500 font-medium mt-1 mb-3">2023大广赛（陕西赛区）三等奖</p>
+                        <p class="text-slate-500 text-sm leading-relaxed line-clamp-2">
+                            借用陆游与唐婉的经典典故，通过古风叙事与唯美台词，传递品牌情感，展现对古风画面的审美把控。
+                        </p>
+                    </div>
+
+                    <!-- 作品 3 -->
+                    <div class="group cursor-pointer">
+                        <div class="w-full aspect-[16/9] bg-slate-200 mb-5 relative shadow-sm rounded-lg overflow-hidden">
+                            <video controls class="w-full h-full object-cover" poster="https://i.postimg.cc/QtVxxqBz/10yue29ri-(10).png">
+                                <source src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%B9%BF%E6%92%AD%E7%BA%B3%E7%88%B1%E6%96%AF.mp4" type="video/mp4">
+                                您的浏览器不支持视频播放。
+                            </video>
+                            <div class="absolute bottom-4 left-4 bg-black/70 text-white text-xs px-2 py-1 rounded pointer-events-none">商业广告 TVC</div>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 group-hover:text-orange-500 transition-colors">《纳爱斯，从口腔焕然一新开始》</h3>
+                        <p class="text-sm text-orange-500 font-medium mt-1 mb-3">2024大广赛（陕西赛区）三等奖</p>
+                        <p class="text-slate-500 text-sm leading-relaxed line-clamp-2">
+                            “多加辣子，是我对你的承诺...” 精准洞察当代年轻人痛点，通过生活化场景拉近品牌距离。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 音视频静帧展示 -->
+                <div class="mt-16 pt-8 border-t border-slate-200/50">
+                    <h3 class="font-bold text-slate-800 mb-6 text-sm uppercase tracking-wider flex items-center">
+                        <span class="w-6 h-[2px] bg-orange-500 mr-3"></span>音视频静帧展示
+                    </h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <!-- Frame 1 -->
+                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://i.postimg.cc/NGVpdfQM/10月29日(2).png" class="w-full h-full object-cover">
+                        </div>
+                        <!-- Frame 2 -->
+                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://i.postimg.cc/053cV29K/10月29日(1).png" class="w-full h-full object-cover">
+                        </div>
+                        <!-- Frame 3 -->
+                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://i.postimg.cc/y65vLY7N/10月29日(3).png" class="w-full h-full object-cover">
+                        </div>
+                        <!-- Frame 4 -->
+                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://i.postimg.cc/Y2Vbdqtt/10月29日(4).png" class="w-full h-full object-cover">
+                        </div>
+                        <!-- Frame 5 -->
+                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://i.postimg.cc/rpZMbtnX/10月29日(6).png" class="w-full h-full object-cover">
+                        </div>
+                        <!-- Frame 6 -->
+                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://i.postimg.cc/3RP7rQQ6/10月29日(5).png" class="w-full h-full object-cover">
+                        </div>
+                        <!-- Frame 7 -->
+                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://i.postimg.cc/DzpnDbCj/10月29日(8).png" class="w-full h-full object-cover">
+                        </div>
+                        <!-- Frame 8 -->
+                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://i.postimg.cc/PxLTkr98/10月29日(9).png" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. 文案作品 -->
+        <section id="copywriting" class="py-24 bg-[#F0F4F8]">
+            <div class="max-w-[1280px] mx-auto px-6">
+                <div class="mb-12 flex items-baseline justify-between border-b border-slate-300 pb-4">
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-800">文案作品</h2>
+                    <span class="text-slate-500 font-medium text-sm">深度报道 / 特稿 / 通讯</span>
+                </div>
+
+                <div class="space-y-8">
+                    <!-- 文案 1 -->
+                    <a href="https://mp.weixin.qq.com/s/tR8fkY79cjFiAOE48_lsEg" target="_blank" class="block bg-white border border-slate-200 p-8 rounded-lg hover:border-orange-400 hover:shadow-lg transition-all group cursor-pointer relative">
+                        <div class="flex flex-col md:flex-row justify-between md:items-start mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold text-slate-800 group-hover:text-orange-500 transition-colors flex items-center">
+                                    《在西安，他们决定继续搞足球》
+                                    <i data-lucide="external-link" class="w-5 h-5 ml-2 text-slate-300 group-hover:text-orange-500 transition-colors"></i>
+                                </h3>
+                                <div class="flex gap-2 mt-2">
+                                    <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded">深度调查</span>
+                                    <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded">4500字+</span>
+                                </div>
+                            </div>
+                            <span class="text-slate-400 text-sm mt-4 md:mt-0">2024</span>
+                        </div>
+                        <p class="text-slate-600 leading-relaxed">
+                            独立完成从选题策划、寻找采访对象、设置提纲到写作的全部工作。深入一线青训机构，探寻成功的足球城市里几则并不太成功的足球故事
+                        </p>
+                    </a>
+
+                    <!-- 文案 2 -->
+                    <a href="http://share.591adb.com/sharearticle/article/article_id/5811050/app_key/406ae173bfde42e23fb649bcfd7f3f96" target="_blank" class="block bg-white border border-slate-200 p-8 rounded-lg hover:border-orange-400 hover:shadow-lg transition-all group cursor-pointer relative">
+                        <div class="flex flex-col md:flex-row justify-between md:items-start mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold text-slate-800 group-hover:text-orange-500 transition-colors flex items-center">
+                                    《张姣姣：车辆畅行“智多星”》
+                                    <i data-lucide="external-link" class="w-5 h-5 ml-2 text-slate-300 group-hover:text-orange-500 transition-colors"></i>
+                                </h3>
+                                <div class="flex gap-2 mt-2">
+                                    <span class="text-xs font-bold bg-red-50 text-red-600 px-2 py-1 rounded border border-red-100">国家级媒体刊登</span>
+                                    <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded">人物特稿</span>
+                                </div>
+                            </div>
+                            <span class="text-slate-400 text-sm mt-4 md:mt-0">2024</span>
+                        </div>
+                        <p class="text-slate-600 leading-relaxed">
+                            发表于《中国交通报》。通过深度访谈挖掘人物弧光，展现了对高端人物的采写能力与文字驾驭力。
+                        </p>
+                    </a>
+
+                    <!-- 文案 3 -->
+                    <a href="https://mp.weixin.qq.com/s/G8IagyioPK952Hcg-Ev8tg" target="_blank" class="block bg-white border border-slate-200 p-8 rounded-lg hover:border-orange-400 hover:shadow-lg transition-all group cursor-pointer relative">
+                        <div class="flex flex-col md:flex-row justify-between md:items-start mb-4">
+                            <div>
+                                <h3 class="text-2xl font-bold text-slate-800 group-hover:text-orange-500 transition-colors flex items-center">
+                                    《探冬训 | 陕西省拳击队、跆拳道队冬训》
+                                    <i data-lucide="external-link" class="w-5 h-5 ml-2 text-slate-300 group-hover:text-orange-500 transition-colors"></i>
+                                </h3>
+                                <div class="flex gap-2 mt-2">
+                                    <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded">系列报道</span>
+                                    <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded">故事化叙事</span>
+                                </div>
+                            </div>
+                            <span class="text-slate-400 text-sm mt-4 md:mt-0">2024</span>
+                        </div>
+                        <p class="text-slate-600 leading-relaxed">
+                            打破传统通讯模式，引入故事化叙事，增强内容的现场感与共情力。深度跟队报道，展现体育记者的专业素养。
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 图片作品 (Visual Gallery) -->
+        <section id="gallery" class="py-24">
+            <div class="max-w-[1280px] mx-auto px-6">
+                <div class="mb-12 flex items-baseline justify-between border-b border-slate-200 pb-4">
+                    <h2 class="text-3xl md:text-4xl font-black text-slate-800">图片作品</h2>
+                    <span class="text-slate-400 font-medium text-sm">摄影 / 记录 / 瞬间</span>
+                </div>
+                
+                <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                    <!-- Images -->
+                    <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
+                        <img src="https://i.postimg.cc/fbSsnd73/wei-xin-tu-pian-20251224163259-242-105.jpg" class="w-full h-auto block" loading="lazy">
+                    </div>
+                    <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
+                        <img src="https://i.postimg.cc/q76rVKcN/wei-xin-tu-pian-20251224163300-243-105.jpg" class="w-full h-auto block" loading="lazy">
+                    </div>
+                    <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
+                        <img src="https://i.postimg.cc/25LYRWdY/wei-xin-tu-pian-20251224163304-244-105.jpg" class="w-full h-auto block" loading="lazy">
+                    </div>
+                    <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
+                        <img src="https://i.postimg.cc/8CfGQvdM/wei-xin-tu-pian-20251224163306-245-105.jpg" class="w-full h-auto block" loading="lazy">
+                    </div>
+                    <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
+                        <img src="https://i.postimg.cc/hGQnWm80/wei-xin-tu-pian-20251224163310-246-105.jpg" class="w-full h-auto block" loading="lazy">
+                    </div>
+                    <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
+                        <img src="https://i.postimg.cc/GpTRwDP1/wei-xin-tu-pian-20251224163414-247-105.jpg" class="w-full h-auto block" loading="lazy">
+                    </div>
+                    <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
+                        <img src="https://i.postimg.cc/nL9xbmKc/wei-xin-tu-pian-20251224163416-248-105.jpg" class="w-full h-auto block" loading="lazy">
+                    </div>
+                    <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
+                        <img src="https://i.postimg.cc/mr14f93t/wei-xin-tu-pian-20251224163419-249-105.jpg" class="w-full h-auto block" loading="lazy">
+                    </div>
+                    <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
+                        <img src="https://i.postimg.cc/P5RHRywV/wei-xin-tu-pian-20251224164128-250-105(1).jpg" class="w-full h-auto block" loading="lazy">
+                    </div>
+                    <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
+                        <img src="https://i.postimg.cc/bJXhzvLS/wei-xin-tu-pian-20251224164131-251-105.jpg" class="w-full h-auto block" loading="lazy">
+                    </div>
+                    <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
+                        <img src="https://i.postimg.cc/4xSGSPcx/wei-xin-tu-pian-20251224164132-252-105(1).jpg" class="w-full h-auto block" loading="lazy">
+                    </div>
+                    <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
+                        <img src="https://i.postimg.cc/g2TpTshz/微信图片_20251224164133_253_105(1).jpg" class="w-full h-auto block" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer id="contact" class="py-16 bg-light-blue text-slate-800 border-t border-slate-200/50">
+            <div class="max-w-[1280px] mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-4">期待与您共创内容未来</h2>
+                        <div class="flex flex-col gap-2 text-slate-600 text-sm">
+                            <span class="flex items-center gap-2"><i data-lucide="mail" class="w-4 h-4 text-orange-500"></i> 335458882@163.com</span>
+                            <span class="flex items-center gap-2"><i data-lucide="phone" class="w-4 h-4 text-orange-500"></i> (+86) 199-9120-6221</span>
+                            <span class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-orange-500"></i> 意向城市：北京、深圳</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xl font-black tracking-tight mb-1">何长轩</div>
+                        <span class="text-xs text-slate-500">© 2025 All Rights Reserved.</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // 初始化图标
+        lucide.createIcons();
+
+        // 注册 ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 初始化平滑滚动
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true,
+        });
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // 入场动画
+        gsap.from(".hero-text > *", {
+            y: 50,
+            opacity: 0,
+            duration: 1.2,
+            stagger: 0.1,
+            ease: "power3.out",
+            delay: 0.2
+        });
+
+        // 滚动浮现动画
+        const revealElements = document.querySelectorAll("h2, h3, .group, li.relative");
+        revealElements.forEach((element) => {
+            gsap.fromTo(element, 
+                { y: 30, opacity: 0 },
+                {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 90%",
+                    }
+                }
+            );
+        });
+    </script>
+</body>
+</html>
