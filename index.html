@@ -19,20 +19,12 @@
     <style>
         :root {
             /* --- 配色方案 (低饱和度浅蓝系) --- */
-            
-            /* 整体背景：极淡的蓝白色 */
             --bg-color: #F5F8FA; 
-            
-            /* 导航栏 & 页脚背景：低饱和度浅蓝色 */
             --bar-bg-color: #DEE6ED;
-            
-            /* 文字颜色 */
-            --text-primary: #2C3E50; /* 深蓝灰 */
+            --text-primary: #2C3E50; 
             --text-secondary: #546E7A; 
-            
-            /* 装饰色 */
             --theme-blue: #8FA6B8; 
-            --accent-orange: #F97316; /* 橙色亮点 */
+            --accent-orange: #F97316; 
         }
 
         body {
@@ -44,13 +36,11 @@
             overflow-x: hidden;
         }
 
-        /* 隐藏滚动条 */
         ::-webkit-scrollbar {
             width: 0px;
             background: transparent;
         }
 
-        /* 导航链接动效 */
         .nav-link {
             position: relative;
             color: var(--text-primary);
@@ -77,7 +67,6 @@
             transform-origin: bottom left;
         }
 
-        /* 橙色标题风格 */
         .section-title {
             color: var(--accent-orange);
             font-weight: 900;
@@ -89,15 +78,27 @@
             overflow: hidden;
             border-radius: 8px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
         }
         .img-zoom-container img {
             transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            cursor: zoom-in; /* 鼠标变为放大镜 */
         }
         .img-zoom-container:hover img {
-            transform: scale(1.03);
+            transform: scale(1.05);
         }
 
-        /* 分隔线 */
+        /* Lightbox 样式 */
+        #lightbox {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        #lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
         .section-divider {
             height: 1px;
             background: linear-gradient(to right, transparent, var(--theme-blue), transparent);
@@ -105,13 +106,20 @@
             margin: 4rem 0;
         }
         
-        /* 自定义浅蓝色背景类 */
         .bg-light-blue {
             background-color: var(--bar-bg-color);
         }
     </style>
 </head>
 <body>
+
+    <!-- Lightbox (点击放大查看器) -->
+    <div id="lightbox" class="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 cursor-zoom-out">
+        <img id="lightbox-img" src="" alt="Full view" class="max-w-full max-h-full object-contain rounded-sm shadow-2xl transition-transform duration-300">
+        <button id="lightbox-close" class="absolute top-6 right-6 text-white hover:text-orange-500 transition-colors">
+            <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+    </div>
 
     <!-- 导航栏 -->
     <nav class="fixed top-0 w-full z-50 bg-light-blue/90 backdrop-blur-md border-b border-white/20 shadow-sm">
@@ -133,7 +141,6 @@
         
         <!-- 首页首屏 (Hero) -->
         <section class="min-h-[85vh] flex items-center justify-start max-w-[1280px] mx-auto px-6 relative overflow-hidden">
-            <!-- 左侧文字内容 -->
             <div class="space-y-8 z-10 hero-text max-w-3xl relative">
                 <p class="text-slate-500 font-medium tracking-wider text-base">
                     <span class="inline-block w-8 h-[2px] bg-orange-500 align-middle mr-2"></span>
@@ -151,10 +158,9 @@
                 </div>
             </div>
             
-            <!-- 右侧人物形象 -->
             <div class="absolute right-[-10%] md:right-0 bottom-0 h-[85%] w-full md:w-[55%] z-0 pointer-events-none flex items-end justify-end">
                 <img 
-                    src="https://i.postimg.cc/JhH8VX3N/微信图片_20251224162101_241_105(1).jpg" 
+                    src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224162101_241_105%281%29.jpg?q-sign-algorithm=sha1&q-ak=AKIDdg3sT34GMHaiBH0NhDMfyhArUZrmGPGsI7GaC50KsvkDePsM-q5BkL655m3BTv_E&q-sign-time=1766590302;1766593902&q-key-time=1766590302;1766593902&q-header-list=host&q-url-param-list=ci-process&q-signature=48d14d143239238f66d818eabc77b117f070d9e6&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya081395df99b2947bf69e20c43e735205lQZCcsO87j9UnIwjNUMSOPz09Pt83RFZpCD8jvztarrgqKblmv6GLLKKUA3ufnmsD6cUlUE7xAP0dULYJAgKp4OR2WnX6tGXyuxZgrSfLZ67Z_iJksvPRhDHO7jJAtNO77MqWyuaF-UFRlyl0DeFFu2Gki9WYdAnzOnSFGvSfF8i_RZETsxO_iLVFI_BHEah&ci-process=originImage" 
                     alt="何长轩" 
                     class="h-full w-full object-contain object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.15)]"
                     style="-webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%); mask-image: linear-gradient(to bottom, black 85%, transparent 100%);"
@@ -166,11 +172,10 @@
         <section id="about" class="py-24" style="background-color: #F0F4F8;">
             <div class="max-w-[1280px] mx-auto px-6">
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-12">
-                    <!-- 左侧：照片与核心信息 -->
                     <div class="md:col-span-4 space-y-8">
                         <div class="aspect-[3/4] bg-white p-3 shadow-xl rounded-2xl transition-transform duration-500 hover:-translate-y-2 border border-slate-100">
                             <div class="w-full h-full overflow-hidden bg-gray-100 rounded-xl relative">
-                                <img src="https://i.postimg.cc/Dyqd5fSW/wei-xin-tu-pian-20250918125716.jpg" alt="何长轩生活照" class="w-full h-full object-cover">
+                                <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20250918125716.jpg?q-sign-algorithm=sha1&q-ak=AKIDA8YQgX3FfR4xUPEzoUSBf9UsKWj8xBFOt9AInSG8nogM7khIFUj0Z8x0CdcTX585&q-sign-time=1766590371;1766593971&q-key-time=1766590371;1766593971&q-header-list=host&q-url-param-list=ci-process&q-signature=4876b123a6b59a4c463dd5e219b1396e01b188d3&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGyaa12a9f9b8594c152af7a5473f18f8bc0lQZCcsO87j9UnIwjNUMSOIM9AoJt4GuTArOUEONIK7j-zc9gzR-FaDUnomKsA0_triFVbsMCTeP4Mou4-xpSL5N6NhbU94O2hdXz7-XWG6LboGlrnyuj388u6Nv5UkOAuperPj-0w_gnB0xbmcpQwV0Ugt9530dijDX8vKGb6xJBhGROqu7m5FFU4d4_2fJ7&ci-process=originImage" alt="何长轩生活照" class="w-full h-full object-cover">
                             </div>
                         </div>
                         
@@ -187,19 +192,15 @@
                         </div>
                     </div>
 
-                    <!-- 右侧：详细简历内容 -->
                     <div class="md:col-span-8 space-y-12">
                         <div>
-                            <!-- 修改：字号调大 -->
                             <h2 class="section-title text-2xl uppercase tracking-widest mb-6">基本信息</h2>
                             <p class="text-lg text-slate-700 leading-relaxed">
                                985硕士在读+211本科，新闻传播科班出身。兼具扎实的理论功底与前沿的AIGC新媒体视野。
                             </p>
                         </div>
 
-                        <!-- 第一行：教育经历 & 获奖经历 (重点) -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                            <!-- 教育经历 -->
                             <div class="space-y-6">
                                 <h3 class="font-bold text-slate-800 text-lg border-b border-orange-200 pb-2 inline-block">教育经历</h3>
                                 <ul class="space-y-6">
@@ -216,7 +217,6 @@
                                 </ul>
                             </div>
                             
-                            <!-- 修改：获奖经历 (替换了项目经验，加粗 AIGC 相关) -->
                             <div class="space-y-6">
                                 <h3 class="font-bold text-slate-800 text-lg border-b border-orange-200 pb-2 inline-block">获奖经历 (精选)</h3>
                                 <ul class="space-y-4">
@@ -240,7 +240,6 @@
                             </div>
                         </div>
 
-                        <!-- 第二行：实习经历 -->
                         <div class="space-y-6">
                             <h3 class="font-bold text-slate-800 text-lg border-b border-orange-200 pb-2 inline-block">实习经历</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -257,7 +256,6 @@
                             </div>
                         </div>
 
-                         <!-- 核心技能 -->
                          <div class="pt-8 border-t border-slate-200">
                             <h3 class="font-bold text-slate-800 text-lg mb-4">核心技能</h3>
                             <div class="flex flex-wrap gap-3">
@@ -281,14 +279,11 @@
                 </div>
 
                 <div class="group cursor-pointer">
-                    <!-- 全宽视频/图片展示区 -->
                     <div class="w-full aspect-video bg-black relative shadow-sm rounded-lg overflow-hidden">
                         <video controls class="w-full h-full object-contain" poster="https://i.postimg.cc/BPFBhC89/wei-xin-tu-pian-2025-12-24-154718-752.png">
                             <source src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E7%BF%8E%E7%BE%BD%E7%9A%84%E6%97%85%E7%A8%8B.mp4" type="video/mp4">
                             您的浏览器不支持视频播放。
                         </video>
-                        
-                        <!-- 奖项角标 -->
                         <div class="absolute top-6 right-6 bg-orange-500 text-white px-4 py-2 text-sm font-bold shadow-lg rounded-sm pointer-events-none">
                             全国一等奖
                         </div>
@@ -319,24 +314,24 @@
                         </h3>
                         <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                             <!-- Image 1 -->
-                            <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                                <img src="https://i.postimg.cc/KKQqLQTK/wei-xin-tu-pian-2025-12-24-154736-928.png" class="w-full h-full object-cover">
+                            <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                                <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2025-12-24_154718_752.png?q-sign-algorithm=sha1&q-ak=AKIDapvYe2EXwV3g_SobX9GzVX2sP-dovKb-jEsMc76fNrBhO0DGjKSU72_HQE16XaR7&q-sign-time=1766590617;1766594217&q-key-time=1766590617;1766594217&q-header-list=host&q-url-param-list=ci-process&q-signature=42ef8a6c1b4e170acafda6f1b77158b9c574bcab&x-cos-security-token=55hxRAr6h7Kx27ZCbrsHNNMap0zZEEea376b882964aba9c7a7ad2cf7ed8a0caeK0sBrXiy7rumBw1WcLHBAj8oHhCMuTCrTPzp8hrR3M8z780KSjLgclQIpoVFYzpyljjaYPuzK-OOeyCu7lRExXkpO08_10o2m19wpY_itzvDbAgRN29r9vLlfzrjTWf1FueUmF2aNlOy_tVta26gizXWJx9J_nyo6KbPLqrFlZ5tLda4clImK3jMDISMbdcr&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                             </div>
                             <!-- Image 2 -->
-                            <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                                <img src="https://i.postimg.cc/BPFBhC89/wei-xin-tu-pian-2025-12-24-154718-752.png" class="w-full h-full object-cover">
+                            <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                                <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2025-12-24_154724_269.png?q-sign-algorithm=sha1&q-ak=AKIDLdPnzBH40HOJXe8BGkPbhrxTi8BNJmIVz3cWaZhQHg5EuKFdW82hdXlhZ-TK3l7G&q-sign-time=1766590631;1766594231&q-key-time=1766590631;1766594231&q-header-list=host&q-url-param-list=ci-process&q-signature=092788bd12319a3b6d0627c12dd77c07d0852824&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGyad0cba2987f817f6e660f62041b20186alQZCcsO87j9UnIwjNUMSOBYN1WoLHr8p6ndA-dvdBxYL3sZlzLmYGPStozTcLVkZtYFOIlUuDuZetjk2E1LLomEd3bJdKTU3ZOCgINvvriE9lDQMGCVWeTWys8zX2XvyIp7g52lKzowVp4Jb2N7ZxVj05zmnb-c4354eqQA65_dKTgozZwuCpuhJ_614Aecv&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                             </div>
                             <!-- Image 3 -->
-                            <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                                <img src="https://i.postimg.cc/0KS0tCzZ/wei-xin-tu-pian-2025-12-24-154724-269.png" class="w-full h-full object-cover">
+                            <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                                <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2025-12-24_154728_209.png?q-sign-algorithm=sha1&q-ak=AKIDFp5vtUsG53vAmjsww9yW9GaohtULKskrFF2Pe-pSVqf6bjChQbavOB-R-q9t_FVk&q-sign-time=1766590643;1766594243&q-key-time=1766590643;1766594243&q-header-list=host&q-url-param-list=ci-process&q-signature=2d73c540c247b78527c2ec2fb9e617e18ce96997&x-cos-security-token=55hxRAr6h7Kx27ZCbrsHNNMap0zZEEea9c250fa4466eab538f5bf99e7408a04cK0sBrXiy7rumBw1WcLHBAoryNPJq1uC5lFxAS-dC2-RMtPpN62A-bVtTOrfAL8YMLST0RT31v-2rffPrWIMUysV6mJNSsIwbb8PfxdXvEPGPbE3CmDDkDp9zGKwYdPCYkyApRISq_Ep1X17Xx-CstOQDtoX9HVOsh0AtlKWSAmrebvZ7VaKu9A6Mz9KOmOhi&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                             </div>
                             <!-- Image 4 -->
-                            <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                                <img src="https://i.postimg.cc/ct3BDcvm/wei-xin-tu-pian-2025-12-24-154728-209.png" class="w-full h-full object-cover">
+                            <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                                <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2025-12-24_154732_696.png?q-sign-algorithm=sha1&q-ak=AKIDulkRIwsqztn22EoLaDfMClYst0HB9ItnmfMYCmQeG1WnvnznkAI1j1yCegrMt0oR&q-sign-time=1766590658;1766594258&q-key-time=1766590658;1766594258&q-header-list=host&q-url-param-list=ci-process&q-signature=858e43c884782ae408ca2918974234ba49272d9c&x-cos-security-token=55hxRAr6h7Kx27ZCbrsHNNMap0zZEEeaa69b1dad5c12c6ce192ed19caac482eeK0sBrXiy7rumBw1WcLHBAn2RvaQbt0I2ZDiy8_6PXZv6fLoTHKGpS0b_a2xOgiPg9UDpQEhCM0de76BRTBw926K6I3Fh9LTR0zVYM1vRDXhgKscFthHqXDnaaYY2eJoxmQ7ISRjyPXKMWuUP9VaRmXOUHP9uHq2kMLSLjw4QEG2nZ_EEmKR5PSX28YRt5sWM&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                             </div>
                             <!-- Image 5 -->
-                            <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                                <img src="https://i.postimg.cc/1VFrWK8J/wei-xin-tu-pian-2025-12-24-154732-696.png" class="w-full h-full object-cover">
+                            <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                                <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_2025-12-24_154736_928.png?q-sign-algorithm=sha1&q-ak=AKIDrcOh6sbkg_HkZdezb7ZPQqSlg4D1IVLejBNwIfTyvdIu1OGXzkYUDfx2pXhBBX_n&q-sign-time=1766590673;1766594273&q-key-time=1766590673;1766594273&q-header-list=host&q-url-param-list=ci-process&q-signature=e02af04be07c0c3a34fd633bdecea888cf00f957&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya19893c6c31c6def1a2ed82b6062eb70dlQZCcsO87j9UnIwjNUMSOL9iYwOjuwJGnFEV6FgtUbcBu0AeaX-HnUdeNvmEDJywEkwxfeTaNHzM8j3NPEOmGyfRAUw4iKA65V_G3isMoqS5--KeIgXlCyU69Vn3O_FDRApYZCemC_zsnef06bXvVZpLWts_bYF8TTP35wffimGQctGVk-fjySK7FfN_Uchx&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                             </div>
                         </div>
                     </div>
@@ -413,36 +408,36 @@
                     </h3>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                         <!-- Frame 1 -->
-                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                            <img src="https://i.postimg.cc/NGVpdfQM/10月29日(2).png" class="w-full h-full object-cover">
+                        <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/10%E6%9C%8829%E6%97%A5.png?q-sign-algorithm=sha1&q-ak=AKID974H7dXhvYy53NvWdMvvRPINQzuyL9zNLzEUCKql3YGn8n2QTdrqtK4nlwVYun_u&q-sign-time=1766591306;1766594906&q-key-time=1766591306;1766594906&q-header-list=host&q-url-param-list=ci-process&q-signature=b9da46181244c6c20ab18587c52930ab268d4732&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGyae39c598b20259cb41663a23baf99e156lQZCcsO87j9UnIwjNUMSOOtdmSV4ZHKaJy1TaTsgbyU5uQPV7JLUSDIqkAjGf1-sUchPF7uAHeczxyQSQ5EzQDqYLfIzCeoWVhqQKtLJy3WASJQNr777JUJAoFlCWu4v1UgOdDzyerYphNtTSF-_67x-yBOJsCQyERSbhdSYA1o0R1IiBclBl2N0oqTdPggT&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                         </div>
                         <!-- Frame 2 -->
-                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                            <img src="https://i.postimg.cc/053cV29K/10月29日(1).png" class="w-full h-full object-cover">
+                        <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/10%E6%9C%8829%E6%97%A5%281%29.png?q-sign-algorithm=sha1&q-ak=AKIDNt0vuHgnuVOwz0njFFaO97Hc_sCCIAtuEPmsE2Dgwwcprbqwj04tpg4jwcnVlbkS&q-sign-time=1766591321;1766594921&q-key-time=1766591321;1766594921&q-header-list=host&q-url-param-list=ci-process&q-signature=b72ba84b244c21c2a2a76537e5e19e66a196cf70&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya7d1af419d63e612f283867ec49733de0lQZCcsO87j9UnIwjNUMSODQawxQDqD2iLyahUCR4DdtaC0x968_mW4PqZpF0Z-9YlAwZquvWK7kWTadL9tPb1ArTZL323T8l2dgGmuY91m2df7tRO9o3zXdzuQZZmwFd_r1EdF9F5jff4-QYVUB1dnrqfXNexvhO57ceEMIuDXvvhb89lvjinK4jUkw0l8SI&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                         </div>
                         <!-- Frame 3 -->
-                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                            <img src="https://i.postimg.cc/y65vLY7N/10月29日(3).png" class="w-full h-full object-cover">
+                        <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/10%E6%9C%8829%E6%97%A5%283%29.png?q-sign-algorithm=sha1&q-ak=AKIDGn7QmnMQE53hC8RNP-0hrUKkBaotvrTnqzrF4FcT7vi7KeY3_pfkTdzJsptGR81F&q-sign-time=1766591348;1766594948&q-key-time=1766591348;1766594948&q-header-list=host&q-url-param-list=ci-process&q-signature=93706888bdf30138123bb28c92431f624209349e&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya09630617686523d6f0f333a5c2818252lQZCcsO87j9UnIwjNUMSOIKtPDbEb6Gld7F1FRp2LZRFTWF8ZkKhr8hZyFnUedMBdz8VAxhsF1JdxGAZPrPCJoArwmwgEPqpxWa5xlf3WBqiN8wj4Ah-k2CLBKnVQMzSGQt9YTg4eSGckc73RaXzKyAqKthktXgE_tiXXLLYhiyuXVPxvxK0OS9DWZyC5wpr&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                         </div>
                         <!-- Frame 4 -->
-                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                            <img src="https://i.postimg.cc/Y2Vbdqtt/10月29日(4).png" class="w-full h-full object-cover">
+                        <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/10%E6%9C%8829%E6%97%A5%284%29.png?q-sign-algorithm=sha1&q-ak=AKIDUVfbousg62FI8VnCIbT_n8XWzZunsW6l3JlfiKoI6haeEo55JlENaVJTPZyYPIxN&q-sign-time=1766591457;1766595057&q-key-time=1766591457;1766595057&q-header-list=host&q-url-param-list=ci-process&q-signature=67ffd13618ee02999053f7a6534f3510999419fe&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya2334b9183f47e63b02a75c94bf6c477alQZCcsO87j9UnIwjNUMSOGFmf18aOW0MTwu6pVB7NIHYMKNFR_N2IK2uyIV2HjEID2Hrj84oWSyMQuA31dRAX5B7gwA1VuVzlaN7V8dThi7FF1bsofmoqG6dBTCCW5-kR12tobxKqGn1rv8Uur4GQDAtU1SVtQmLaBf9nx0vbMwWJ1meMnYBHj-k6KlHfx6p&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                         </div>
                         <!-- Frame 5 -->
-                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                            <img src="https://i.postimg.cc/rpZMbtnX/10月29日(6).png" class="w-full h-full object-cover">
+                        <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/10%E6%9C%8829%E6%97%A5%285%29.png?q-sign-algorithm=sha1&q-ak=AKIDNDUP4FJm9JsYUcfD9LWzxEgQQVYm8f7Wn0XJ8Fw2ryN1I8PRnfyoEMxxrYR9Vm2Q&q-sign-time=1766591473;1766595073&q-key-time=1766591473;1766595073&q-header-list=host&q-url-param-list=ci-process&q-signature=73a8e618e126539004e840459f329c5108209830&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGyada3ac5db57994d53dbc5a0e30317a0d4lQZCcsO87j9UnIwjNUMSOBEzrNi1pw-ESjpvb40p9kiLzYdS7VsFCfadRB0oNBjNTwYQhzW3pYGxonnTklk44B18S5_7KTmSbPJ1kNLQ6sLyw8OJ9Q_V96Aex6FpFnUurqvxGy3ypcOIOs4OSJ17PImeKjwE-EOqOiMtiFVaIy1zzXkNe-oHrs5lYqJaFOF4&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                         </div>
                         <!-- Frame 6 -->
-                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                            <img src="https://i.postimg.cc/3RP7rQQ6/10月29日(5).png" class="w-full h-full object-cover">
+                        <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/10%E6%9C%8829%E6%97%A5%286%29.png?q-sign-algorithm=sha1&q-ak=AKIDR1ZkT9tmKbYAEkyb8ybx1Ofuo6bz2nY9Ff70AMMTTPUwkZd2CDKn3UVTyC7wZT0v&q-sign-time=1766591484;1766595084&q-key-time=1766591484;1766595084&q-header-list=host&q-url-param-list=ci-process&q-signature=90767303b590107aaf9b9b8443013aa529e07cc7&x-cos-security-token=55hxRAr6h7Kx27ZCbrsHNNMap0zZEEea54a11c7f38d99dbd084b7d40dfefeb7fK0sBrXiy7rumBw1WcLHBAuCZ21Du57eTnFsGIqY8fhM_OH4_DEbqIAXXtR2BIot_UFISaEWDvEn2g1XDBIqnxP5G_XxnK_WiD_L2L4JepxCbnODAbxTaHdfWqTi-hgtnt3ARqd4GIeFnmJD7jd051PdFiVOGRUz6BgdR6DGZZSOSW014H0MyIpf1g26Og8SM&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                         </div>
                         <!-- Frame 7 -->
-                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                            <img src="https://i.postimg.cc/DzpnDbCj/10月29日(8).png" class="w-full h-full object-cover">
+                        <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/10%E6%9C%8829%E6%97%A5%288%29.png?q-sign-algorithm=sha1&q-ak=AKIDoDSWSa9EEXtz4AkM6_VHsyNr6fd61Pp3MzUQDFgxZa9wZPK1h6mHmeX4KJhQjMc7&q-sign-time=1766591541;1766595141&q-key-time=1766591541;1766595141&q-header-list=host&q-url-param-list=ci-process&q-signature=1e4c803cb3b6fb35b50e4afe4d4b62be9db06e61&x-cos-security-token=55hxRAr6h7Kx27ZCbrsHNNMap0zZEEea0b964e669a32453e5c7b8e1355f71900K0sBrXiy7rumBw1WcLHBAoMhPcu-BXTIAsIOvTbC0izgr-uNAFrIxX4bShQNO7C7Y8QQm5Ky6tGhpJ8QsCN5xtEUcj7gY4f2wjPEhSf3wXBM1FWDLQsx3EBSM4atRMhqsOnWUp4uUcrUUGr16JDe4Sgik5UovF7mXc8ijZGjPSgvstV3JtG46HaO1b8poyFz&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                         </div>
                         <!-- Frame 8 -->
-                        <div class="img-zoom-container cursor-zoom-in shadow-sm aspect-video bg-gray-100 border border-slate-100">
-                            <img src="https://i.postimg.cc/PxLTkr98/10月29日(9).png" class="w-full h-full object-cover">
+                        <div class="img-zoom-container shadow-sm aspect-video bg-gray-100 border border-slate-100">
+                            <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/10%E6%9C%8829%E6%97%A5%289%29.png?q-sign-algorithm=sha1&q-ak=AKIDvVpJCnkjePdEkQLURcMi_pieENAkiAImzJHVki1NGF1dzi-ArWo0-2foPQUaQc5T&q-sign-time=1766591549;1766595149&q-key-time=1766591549;1766595149&q-header-list=host&q-url-param-list=ci-process&q-signature=ce6044ce378d3ec05eef4d0218e5539fee56510a&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGyaab95b7cce4922df2f2a80eda4cfc6dd7lQZCcsO87j9UnIwjNUMSOK-_k2_W-jeVrM48ZoCrnjqYpJMgkIheAFUYOedVU1_gtDNi8S_Y95mTFWAwSJSzwFbyZM8dAQTVvLXI6MvyGPshnILLb1xZC0TB37wDsWYGRz-GYTNnsLabYtuZZmCeTqG-2ZfFNtCOfe_MJ9l5oYeaGEevZUbnyc40toSQYWED&ci-process=originImage" class="w-full h-full object-cover lightbox-trigger">
                         </div>
                     </div>
                 </div>
@@ -530,42 +525,41 @@
                 </div>
                 
                 <div class="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-                    <!-- Images -->
                     <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
-                        <img src="https://i.postimg.cc/fbSsnd73/wei-xin-tu-pian-20251224163259-242-105.jpg" class="w-full h-auto block" loading="lazy">
+                        <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224163259_242_105.jpg?q-sign-algorithm=sha1&q-ak=AKID-NrTs0kmq-gRiM1AlLApMECZ8hPXe3D0MQhyeRIqYSSaGCXbcHMIEksnae1B2ptt&q-sign-time=1766591959;1766595559&q-key-time=1766591959;1766595559&q-header-list=host&q-url-param-list=ci-process&q-signature=8afb69dd0c2822980606573b8b6a090eaf9c28dd&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya354f9d057a457bb1f856ff1d3fa886bclQZCcsO87j9UnIwjNUMSOBlzMBtQUEm0I-pqU9LzZ5s_Luub4TeHnnp2UZmvb5z_5aLLFAY99SBDQC-XLweJ5bWZstzNF3m4fINCJWLVC6o7q7GH6naQuRko431MRRcenKNNfGE_6yEKk4sSJBQs8mYaXtriGUzX3ihzXHosJxbAAc1yNyX5PjQyiAE9YgVe&ci-process=originImage" class="w-full h-auto block lightbox-trigger" loading="lazy">
                     </div>
                     <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
-                        <img src="https://i.postimg.cc/q76rVKcN/wei-xin-tu-pian-20251224163300-243-105.jpg" class="w-full h-auto block" loading="lazy">
+                        <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224163300_243_105.jpg?q-sign-algorithm=sha1&q-ak=AKID81BfR4yA40JYuedUOsi5OAVxScUBMUpLSetjHKBJAEYx42LlTc-Q2Ddh4Jd1Qi0D&q-sign-time=1766591978;1766595578&q-key-time=1766591978;1766595578&q-header-list=host&q-url-param-list=ci-process&q-signature=daafa0f4ef0ce02f03f6b47aae1f3f68feb6e4e4&x-cos-security-token=55hxRAr6h7Kx27ZCbrsHNNMap0zZEEeab0d2384f71e3d15078107e1b9c35ee76K0sBrXiy7rumBw1WcLHBAq2WG_K0IQpEI5yKV1ufj0EwPUy5qsogDgSfswWRdGbGecr3W0fUYKIIR_z2Gd5HEgAmXDPmAwmxX5XO0GrJTifRZRMIVi6LYN1rrhSMoEYQmBnzqDdr0PpseCT-x1REAKbbivBMIXBS1osdvZMIkRXPVArQAoxvgRNDMqcqzTNG&ci-process=originImage" class="w-full h-auto block lightbox-trigger" loading="lazy">
                     </div>
                     <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
-                        <img src="https://i.postimg.cc/25LYRWdY/wei-xin-tu-pian-20251224163304-244-105.jpg" class="w-full h-auto block" loading="lazy">
+                        <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224163304_244_105.jpg?q-sign-algorithm=sha1&q-ak=AKIDKRFYKQkcB_2C-oLrvM-f3Z2ylIBi_CBSucsEzLU7oeQ4zHNoCZYRIY21Z7U7aRLY&q-sign-time=1766591939;1766595539&q-key-time=1766591939;1766595539&q-header-list=host&q-url-param-list=ci-process&q-signature=14857de6789257cf3d8a3c6437062f900e38adfe&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya93952d4ed47d01060cdbc57e5f13691dlQZCcsO87j9UnIwjNUMSOIT56hxoKb__OrfHqNokf-Z4EQ_xzzXsYyHRDT4OD7oTMWbLZyaKyMo_whkUSrGfXv-TsrFeyPO0TUDpDoGz4sOepcgnn0IbgnrkQJ8Iea-WBPZZaJdxWFujoLOarABGNNwEelHV985NS58hEQbX-WLmCRoO5WWHaBe7rKs4rLJl&ci-process=originImage" class="w-full h-auto block lightbox-trigger" loading="lazy">
                     </div>
                     <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
-                        <img src="https://i.postimg.cc/8CfGQvdM/wei-xin-tu-pian-20251224163306-245-105.jpg" class="w-full h-auto block" loading="lazy">
+                        <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224163306_245_105.jpg?q-sign-algorithm=sha1&q-ak=AKIDU1dW0R2dgA9GBmrrPvAAViou3OkUb5I4OOUMtNd3jMqL-KIyBkY5gg2lFdVs4XHq&q-sign-time=1766591968;1766595568&q-key-time=1766591968;1766595568&q-header-list=host&q-url-param-list=ci-process&q-signature=2d201d88905d1acaeef628a0ce901217ad6272c9&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya0d8decdd0dbb2257022e28ff00c2a234lQZCcsO87j9UnIwjNUMSOOFl4R8cDluSftCIry4zgl2EgxxAN0KfDpLwPI57ojRlKVE54YaOqviULkBAlzNWHSGE1ZCwfLluRX5c0yhkoOqOBGYWUUzqdXSkmDWcDfSvR_rKz7VqBNJC5NRtXID0n_Pc3sppTjrGt8nPaxJHfzqlpzxnbXD3usImo_WiiV70&ci-process=originImage" class="w-full h-auto block lightbox-trigger" loading="lazy">
                     </div>
                     <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
-                        <img src="https://i.postimg.cc/hGQnWm80/wei-xin-tu-pian-20251224163310-246-105.jpg" class="w-full h-auto block" loading="lazy">
+                        <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224163310_246_105.jpg?q-sign-algorithm=sha1&q-ak=AKIDdqBJGFQwPMHUsNzoEZkiR1AylJxTA1vfLWp9v2oSPFh25mQ0ZlOidcu4MEmuTiKo&q-sign-time=1766591990;1766595590&q-key-time=1766591990;1766595590&q-header-list=host&q-url-param-list=ci-process&q-signature=502a9a2ae46814fd2b453a3638a00df7173692b4&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya3685859abe7029eb9e19c22781cf6475lQZCcsO87j9UnIwjNUMSOCqbVcSgjnpu1G0r0NH683V62N6qGyQcrNRlC_d7ANi8eX1O_s-J8td6SOtRBclQ1MZXd_jFFEoP5QiDK4yX_unMMqMjwvRygMhPnZfRoZMtpv8A2woc4rhfdeZMp7xd8BsNpFedmbE23Pqo59nnZ2MTt6LUp0maeUYp-aZW00fu&ci-process=originImage" class="w-full h-auto block lightbox-trigger" loading="lazy">
                     </div>
                     <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
-                        <img src="https://i.postimg.cc/GpTRwDP1/wei-xin-tu-pian-20251224163414-247-105.jpg" class="w-full h-auto block" loading="lazy">
+                        <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224163414_247_105.jpg?q-sign-algorithm=sha1&q-ak=AKID1NrnsGCw9lA8X-BtfLyFvGsNR5z1XHeneZWyLvMCrrYUy8CxlTtkMqZfqwFT6Qf5&q-sign-time=1766591930;1766595530&q-key-time=1766591930;1766595530&q-header-list=host&q-url-param-list=ci-process&q-signature=85d69c57e8781697707a4e07ec15a9af53a287e3&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya5d7867fbde670822931d2364b393ff8clQZCcsO87j9UnIwjNUMSOGJpKRGTa3K2qyc_vNg_O0wNr7kKtxRJcnsIF69Q-xCCoJ-l3-kx5MyRzflaYS1TxRwCTB-PykM68MZAXXUwF59MEnHfRw0xh9LB6WZbXeRRHMldmlp9tTZmKeTfGhISqF-HCYJ-wRTZxuLE46opwSlyOF73gDHNWdP1Xgyv8uBI&ci-process=originImage" class="w-full h-auto block lightbox-trigger" loading="lazy">
                     </div>
                     <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
-                        <img src="https://i.postimg.cc/nL9xbmKc/wei-xin-tu-pian-20251224163416-248-105.jpg" class="w-full h-auto block" loading="lazy">
+                        <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224163416_248_105.jpg?q-sign-algorithm=sha1&q-ak=AKIDxnv28q2tbLQd087lFCFWed5-rDt58Zl_q2Rtc2BtnrU_njDY4BCu3RmyG-mcmOHo&q-sign-time=1766591916;1766595516&q-key-time=1766591916;1766595516&q-header-list=host&q-url-param-list=ci-process&q-signature=69b1d74e5dbbd16924acebfabca4fd0b7e861646&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya49c44bfedaa3eab01ece1916be0ca121lQZCcsO87j9UnIwjNUMSOGud86lSPR_x0oS40GxzoVY6ea3bInXIDA-LCzT_UfrGyMxScZOs7J3jaOHPBWoQ1vTTyYkpE-LqtCzJnnWLGrDq9Od_crNS8V8XCskxCrbqo_ih5fW0NGVdfUdUS68FYRx94WGRRB-stSdLMAb2ePQGFwjB88jSWroOFqxVebvk&ci-process=originImage" class="w-full h-auto block lightbox-trigger" loading="lazy">
                     </div>
                     <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
-                        <img src="https://i.postimg.cc/mr14f93t/wei-xin-tu-pian-20251224163419-249-105.jpg" class="w-full h-auto block" loading="lazy">
+                        <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224163419_249_105.jpg?q-sign-algorithm=sha1&q-ak=AKIDOn9kcYSJaFpV-Cz4PLqsWJc8xvhcddevBhp_7KpJKwkgq-yZJ9i5sxhYjdRtcuSu&q-sign-time=1766591949;1766595549&q-key-time=1766591949;1766595549&q-header-list=host&q-url-param-list=ci-process&q-signature=3a41b6e54312a8a6e76eeb69281dd40537a24495&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGyad348a79259d87d02775b4a979793c993lQZCcsO87j9UnIwjNUMSOMCV_DtepaahCW5lattzieJTFza-ONwzPiNwDUf8-9GK5pc_AqnTdt9srDrGDeojSB-17Qir5bqFKjY_YUc22JYDI__86TFXPp7ITYCYWlHJJ7maRljnFBls2atZ7VuSgWLRudoz4FY7M0PJAzKQqa7Z4GjqJnFTASJdlggRjhCD&ci-process=originImage" class="w-full h-auto block lightbox-trigger" loading="lazy">
                     </div>
                     <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
-                        <img src="https://i.postimg.cc/P5RHRywV/wei-xin-tu-pian-20251224164128-250-105(1).jpg" class="w-full h-auto block" loading="lazy">
+                        <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224164128_250_105.jpg?q-sign-algorithm=sha1&q-ak=AKID6gg0Pei43x7tmNVpno0trqiqRez21vPm3SeUKFU_OiIL_YUvnIMZzRgSPXCDNXHE&q-sign-time=1766592013;1766595613&q-key-time=1766592013;1766595613&q-header-list=host&q-url-param-list=ci-process&q-signature=e0908c718de3cc2c6086c180dfe3bba9fa4257c8&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya5c32e9dd7be6f5dbca77faa97baa4a6dlQZCcsO87j9UnIwjNUMSOM_WdWSJPi-YZ5nuPAf_JTCLWJx9CqpyCwh9Th3BhJwcS0gMyBmkP3EZq6t3rjNaiOPqnP7UP_Pnp3GcvIWUs4DG6Ewu9q1qqV934QF6ZOYOZIi9VRFPW_lqGNvdFrXCqHPRtr0v2SYOKLlar6wBgXNz2wIK1g5x6b4d9JXx8wkN&ci-process=originImage" class="w-full h-auto block lightbox-trigger" loading="lazy">
                     </div>
                     <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
-                        <img src="https://i.postimg.cc/bJXhzvLS/wei-xin-tu-pian-20251224164131-251-105.jpg" class="w-full h-auto block" loading="lazy">
+                        <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224164131_251_105.jpg?q-sign-algorithm=sha1&q-ak=AKID957PCOCQP-CJd6jYPHrfytpz3VmxxgEanxzhM9ld4NZ7EAGdKsrlydS01D5B3mXF&q-sign-time=1766591999;1766595599&q-key-time=1766591999;1766595599&q-header-list=host&q-url-param-list=ci-process&q-signature=0cc8452c62dd8ac4e9825cca02a6b96541b1c0ac&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGyae467dc667bd89e509e864527431cb78alQZCcsO87j9UnIwjNUMSOA10qq1IA29g06-4nF_2AIrsPfLGEAQkHCZbWcYJDGaLsKXVJVBKvA7JJPKdckmkCRj0kgFN9hhpcHEBoL3FKV-u_sR9hL6t279bSpF9h8SDty3HrNawFn2CBXol-epwUGIztAoM8KUBufkay2JinrOVNgHctLy0NH35iyXnPyng&ci-process=originImage" class="w-full h-auto block lightbox-trigger" loading="lazy">
                     </div>
                     <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
-                        <img src="https://i.postimg.cc/4xSGSPcx/wei-xin-tu-pian-20251224164132-252-105(1).jpg" class="w-full h-auto block" loading="lazy">
+                        <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224164132_252_105.jpg?q-sign-algorithm=sha1&q-ak=AKIDauNylvhpUHkG6GhFBHx5y4M21blatyr_6bWMrzH7k4VQKnriPUV0nK2yPWK6KbAq&q-sign-time=1766592034;1766595634&q-key-time=1766592034;1766595634&q-header-list=host&q-url-param-list=ci-process&q-signature=1cfc3fee3dd2cef2b4f1505ca2a8ee72df57bac0&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGyaa03f36a71f188b3601f9584c29e7c1cclQZCcsO87j9UnIwjNUMSOFdqH0QvZKKefxDzhMVaKdUxM11E2xH3S5qFCUyG40BsXRfW1V03Phi6LUlyxSOYG3Kjh_dZDiELDW9K8QjFBZuxn7z-X_5LSgcpL_i3jeT23Wwg1OK6M2UoeYWkuELesn5uoyWOBpHB2wUuNZ5CuevfxNbe8awxaS62Too15FXD&ci-process=originImage" class="w-full h-auto block lightbox-trigger" loading="lazy">
                     </div>
                     <div class="break-inside-avoid img-zoom-container cursor-zoom-in shadow-sm border border-slate-100">
-                        <img src="https://i.postimg.cc/g2TpTshz/微信图片_20251224164133_253_105(1).jpg" class="w-full h-auto block" loading="lazy">
+                        <img src="https://rogerhe-1393212013.cos.ap-guangzhou.myqcloud.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20251224164133_253_105.jpg?q-sign-algorithm=sha1&q-ak=AKIDOQ9ChrGlC4Djvg0BprdjElTJEVM37sjQgkfi5qW-xROsiKCo5CYaR7stfgArVe7H&q-sign-time=1766592024;1766595624&q-key-time=1766592024;1766595624&q-header-list=host&q-url-param-list=ci-process&q-signature=4e9034ad50903b9ece45fb33cd8313f71cb39062&x-cos-security-token=uwMcUKgMx63Z4dbB0ZzDN46ZFEbuAGya1e28b3c1ac1f125b7a16a5d2adb0d16clQZCcsO87j9UnIwjNUMSOPkTL31SbM3NHF_rL4W0uZAeCoRZ5EShDNhPGoXrTyiT8BfxR2TeISYBZ24CV9YgaWe3BoSa5hf_3ASHbchG_iL5wZzMwAgtSR5Tje7vc9989x6b9M58OmofXsvOm-YPpj60Gu0BIk9aFzH8NqRywH8wnui0O1-HC2L97ZRiyW5z&ci-process=originImage" class="w-full h-auto block lightbox-trigger" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -639,6 +633,30 @@
                 }
             );
         });
+
+        // Lightbox 逻辑
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.getElementById('lightbox-close');
+        const triggers = document.querySelectorAll('.lightbox-trigger');
+
+        triggers.forEach(img => {
+            img.addEventListener('click', (e) => {
+                e.stopPropagation(); // 防止冒泡
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden'; // 禁止背景滚动
+            });
+        });
+
+        // 关闭 Lightbox (点击关闭按钮或背景)
+        const closeLightbox = () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', closeLightbox);
     </script>
 </body>
 </html>
